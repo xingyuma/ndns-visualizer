@@ -1,0 +1,67 @@
+<?xml version = "1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"DTD/xhtml1-strict.dtd">
+<!-- 
+	See COPYING for copyright and distribution information.
+-->
+<html xmlns = "http://www.w3.org/1999/xhtml">
+
+<head>    
+	<title>Visualizer</title>
+
+    <script src="../IterativeQuery.js"></script>
+    <script src="../DnsParser.js"></script>
+    <script src="../Chain.js"></script>
+    <script src="../raphael-min.js"></script>
+    <script src="../policy/IdentityPolicy.js"></script>
+    <script src="../utils/BufferIterator.js"></script>
+    
+    <script src="../NDN.JS/build/ndn.js"></script>
+    
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../css/layout.css" />
+    
+    
+	<script type="text/javascript">
+        var paper = null;
+        window.onload = function () {
+            paper = Raphael(150, 150, 800, 1800);
+        }
+        function search() {
+            var chain = new Chain(paper,"resultarea");
+            var iq = new IterativeQuery();
+            iq.query(document.getElementById('query').value,"FH",chain.getChain);
+        }
+        function findQueryStack() {
+            var chain = new Chain(paper,"resultarea");
+            var iq = new IterativeQuery();
+            iq.query(document.getElementById('query').value,"FH",chain.outputQueryChain);
+        }
+	</script>
+	
+
+</head>
+<body >
+    <div id="HEADER">
+        <h3>NDNS Chain Visualization</h3>
+        <div class="BOX">
+            <input id = "query" type="text" class="form-control" style="width: 200px;" value="/ndn/ucla.edu/irl/www">
+                <button  type="submit" class="btn btn-default" onclick="search()">Find SEC chain</button>
+                <button  type="submit" class="btn btn-default" onclick="findQueryStack()">Find Query Steps</button>
+                </div>
+    </div>
+    
+    <div id="WRAPPER">
+        <div id="SIDE">
+            
+            <canvas id="canvas" width="506" height="904"></canvas>
+        </div>
+    </div>
+    
+    <div id="hidDiv" style="position: absolute; display: none; ">
+        <div class="alert alert-success">Policy Error</div>
+    </div>
+    
+</body>
+
+</html>

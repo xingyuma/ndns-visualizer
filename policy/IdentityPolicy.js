@@ -255,8 +255,10 @@ IdentityPolicy.prototype.authorize_by_rules = function (/*Name*/ dataName, /*Nam
 	if (rule.key_pat.test(key_name) && rule.data_pat.test(data_name)) {
 	    var namespace_key = new Name(key_name.replace(rule.key_pat, rule.key_pat_ext));
 	    var namespace_data = new Name(data_name.replace(rule.data_pat, rule.data_pat_ext));
-	    //console.log('namespace_key: ' + namespace_key.to_uri());
-	    //console.log('namespace_data: ' + namespace_data.to_uri());
+//        console.log('key ' + keyName.to_uri());
+//        console.log("data   " + dataName.to_uri());
+	    console.log('namespace_key: ' + namespace_key.to_uri());
+	    console.log('namespace_data: ' + namespace_data.to_uri());
 
 	    if (namespace_key.isPrefixOf(namespace_data)) {
 		return true;

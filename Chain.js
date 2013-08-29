@@ -1,24 +1,12 @@
 
-var Chain = function (paper,_id1, _id2) {
+var Chain = function (paper,_id1) {
     this.id1 = _id1;
-    this.id2 = _id2;
     this.paper = paper;
     var self = this;
     
-    this.outputKeyChain = function(_keyname,_domainstack, _id) {
+    this.outputKeyChain = function(_keyname,_domainstack) {
 //        var paper = Raphael(150, 150, 800, 1800);
         this.paper.clear();
-/*        for (var i = 0; i < _keyname.length; i++) {
-            var width = 400;
-            var height  = 50;
-            var x = 40 ;
-            var y = 40 + i * 100;
-            var rect = paper.rect(x, y , width, height, 10);
-            console.log(i);
-            var t = paper.text(x+200, y+20, _keyname[i]);
-            t.attr("font-size", 10);
-        }
-  */
         var cnt = 0;
 //        var lastx = 0;
         var lasty = 0;
@@ -28,14 +16,9 @@ var Chain = function (paper,_id1, _id2) {
         var group = [];
         var num = 0;
         for (var i = 0; i < _keyname.length; i++) {
-            console.log(i+"  "+_domainstack[i][0]);
+//            console.log(i+"  "+_domainstack[i][0]);
             cnt += 1;
-
-/*            var rect = paper.rect(50, nowy + 80, 400, 50, 10);
-            var t = paper.text(150, nowy+90, _domainstack[i][1]);
-            var t = paper.text(250, nowy+110, _keyname[i]);
-            nowy += 80;
- */
+            
             group[i] = num;
             if (i == _keyname.length -1 || _domainstack[i][0] != _domainstack[i+1][0]) {
                 var width = 500;
@@ -63,12 +46,9 @@ var Chain = function (paper,_id1, _id2) {
         for (var i = 0; i  < _keyname.length; i++) {
             var y = start[group[i]] + 50 + cnt*80;
             keystart[i] = y;
-            var rect = this.paper.rect(50, y, 400,50,10);
+            var rect = this.paper.rect(50, y, 480,50,10);
             var t = this.paper.text(150, y + 20, _domainstack[i][1]);
             var t = this.paper.text(250, y + 40, _keyname[i]);
-        
-
-            
             if (i > 0 &&  group[i] == group[i-1]) {
                 cnt = 0;
             }
@@ -86,14 +66,33 @@ var Chain = function (paper,_id1, _id2) {
 //                paper.clear();
     }
     
-    this.getChain = function(_list) {
-        /*query chain*/
+    this.outputQueryChain = function(_list) {
         var tmp  = [];
+        var queryStack = [];
+        var packetStack = [];
         for (var i = 0 ; i < _list.length; i++) {
-           tmp[i] = _list[i].name.to_uri();
+            var str = _list[i].name.to_uri();
+            var strArray = str.split("/");
+            var domain_name = null;
+            var type = null;
+            for (var j = 0 ; j < strArray.length; j++) {
+                if (strArray[j] == "DNS") {
+                    domain_name = _list[i].name.getPrefix(j-1).to_uri();
+                }
+                if (strArray[j] == "FH" || strArray[j] == "NS") {
+                    type = strArray[j];
+                    break;
+                }
+            }
+            queryStack.push([domain_name,type]);
+            packetStack.push(_list[i].name.to_uri());
         }
-//        self.outputKeyChain(tmp,self.id2);
-        
+        self.outputKeyChain(packetStack,queryStack);
+    }
+ 
+    
+    this.getChain = function(_list) {
+        /*query chain*/        
         var iv = new IdentityPolicy(
                                     // anchors
                                     [
@@ -137,7 +136,7 @@ var Chain = function (paper,_id1, _id2) {
                 if (tmp[0] == "zsk") {
                     if (i - 3 < 0)
                         return [new Name("/").to_uri(),"ZSK"];
-                    console.log(_name.getPrefix(i-3));
+//                    console.log(_name.getPrefix(i-3));
                     return [_name.getPrefix(i-3).to_uri(),"ZSK"];
                 }
                 if (tmp[0] == "ksk") {
@@ -153,38 +152,21 @@ var Chain = function (paper,_id1, _id2) {
                     if (strArray[j] == "DNS")
                         return [_name.getPrefix(j-1).to_uri(),strArray[i]];
                 }
-/*                var tmp_name = new Name();
-                for (var j = 1 ; j < i ; j++) {
-                    if (strArray[j] != "DNS") {
-                        tmp_name.append(strArray[j]);
-                    }
-                }
-                return [tmp_name.to_uri(),strArray[i]];
- */           }
+           }
         }
         return null;
     }
-    
-    this.showQueryChain = function(result) {
-/*        for (var i =  0 ; i < result.length; i++) {
-            console.log(result[i]);
-        }
- */
-//        self.output(result);
-    }
-    
+
     this.showChain = function(result) {
         var domainStack = [];
         var keyName = [];
         for (var i = 0 ; i < result.length; i++) {
             keyName[i] = result[i].name.to_uri();
             if (self.parseNDNCertName(result[i].name) != null) {
-                console.log(self.parseNDNCertName(result[i].name) );
-                domainStack.push(self.parseNDNCertName(result[i].name));
-//                console.log(ret);
+             domainStack.push(self.parseNDNCertName(result[i].name));
             }
         }
-        self.outputKeyChain(keyName,domainStack,self.id1);
+        self.outputKeyChain(keyName,domainStack);
         
     };
 };
