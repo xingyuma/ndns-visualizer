@@ -8,7 +8,80 @@ var Chain = function (paper,_id1) {
 //        var paper = Raphael(150, 150, 800, 1800);
         this.paper.clear();
         var cnt = 0;
-//        var lastx = 0;
+        var _length = 0;
+        var height = 100;
+        for (var i = 0; i < _keyname.length - 1; i++) {
+            cnt += 1;
+            if ( _domainstack[i][0] != _domainstack[i+1][0]) {
+                _length = _length + 30;
+                _length = _length + height * cnt;
+                cnt = 0;
+            }
+        }
+        cnt = 0;
+        var lasty = _length + 30 ;
+        var nowy = 0;
+        var start = [];
+        var end = [];
+        var group = [];
+        var num = 0;
+        for (var i = 0; i < _keyname.length; i++) {
+            cnt += 1;
+            group[i] = num;
+            if (i == _keyname.length -1 || _domainstack[i][0] != _domainstack[i+1][0]) {
+                var width = 500;
+                var height  = 85;
+                var x = 40;
+                var y = lasty - 30 ;
+                var rect = this.paper.rect(x, y , width, height*cnt, 10);
+                var t = this.paper.text(280, y+10, _domainstack[i][0]);
+                t.attr("font-size",15);
+                lasty = y - height * cnt;
+                start[num] = y;
+                end[num] = lasty;
+                num ++;
+                nowy = lasty;
+                cnt = 0;
+            }
+        }
+        
+       for (var i = 0; i < num - 1; i++) {
+//            var c = this.paper.image("../Arrow.gif",400,end[i]+5, 40, start[i+1] - end[i] - 10);
+           var line_str = "M 400 " + (start[i])  +"L 400 "+ (start[i] - 30);
+           var c = this.paper.path(line_str);
+           c.attr("stroke-width",5);
+           c.attr("arrow-end","classic-wide-long");
+       }
+        
+        cnt = 0;
+        var keystart = [];
+        for (var i = 0; i  < _keyname.length; i++) {
+            var y = start[group[i]] + 100 - cnt*70;
+            keystart[i] = y;
+            var rect = this.paper.rect(50, y, 480,50,10);
+            var t = this.paper.text(280, y + 20, _domainstack[i][1]);
+            t.attr("font-size",12);
+            var t = this.paper.text(280, y + 40, _keyname[i]);
+            t.attr("font-size",11);
+            if (i > 0 &&  group[i] == group[i-1]) {
+                cnt = 0;
+            }
+            else cnt++;
+        }
+ 
+        for (var i = 0 ; i < _keyname.length -1 ; i++) {
+            var line_str = "M 100 " + (keystart[i] )  +"L 100 "+ (keystart[i+1] + 50 );
+            var c = this.paper.path(line_str);
+            c.attr("stroke-width",2);
+            c.attr("arrow-end","classic-wide-long");
+//            var c = paper.image("Arrow.gif",100,keystart[i] + 50, 100, keystart[i+1] -
+//                                keystart[i] - 50 , 30);
+        }
+    }
+    
+    this.outputQuerySeq = function(_keyname,_domainstack) {
+        this.paper.clear();
+        var cnt = 0;
         var lasty = 0;
         var nowy = 0;
         var start = [];
@@ -16,54 +89,54 @@ var Chain = function (paper,_id1) {
         var group = [];
         var num = 0;
         for (var i = 0; i < _keyname.length; i++) {
-//            console.log(i+"  "+_domainstack[i][0]);
             cnt += 1;
-            
             group[i] = num;
             if (i == _keyname.length -1 || _domainstack[i][0] != _domainstack[i+1][0]) {
                 var width = 500;
-                var height  = 100;
+                var height  = 85;
                 var x = 40;
-                var y = lasty + 40 ;
+                var y = lasty + 30 ;
                 var rect = this.paper.rect(x, y , width, height*cnt, 10);
-                var t = this.paper.text(x+200, y+20, _domainstack[i][0]);
+                var t = this.paper.text(280, y+20, _domainstack[i][0]);
+                t.attr("font-size",15);
                 lasty = y + height * cnt;
                 start[num] = y;
                 end[num] = lasty;
                 num ++;
                 nowy = lasty;
-//                console.log(i);
                 cnt = 0;
             }
         }
         
-        for (var i = 0; i < num - 1; i++) {
-            var c = this.paper.image("Arrow.gif",400,end[i]+5, 40, start[i+1] - end[i] - 10);
+        for (var i = 1; i < num; i++) {
+//            var c = this.paper.image("Arrow.gif",400,end[i]+5, 40, start[i+1] - end[i] - 10);
+            var line_str = "M 400 " + (start[i] - 30)  +"L 400 "+ (start[i] );
+            var c = this.paper.path(line_str);
+            c.attr("stroke-width",5);
+            c.attr("arrow-end","classic-wide-long");
         }
         
         cnt = 0;
         var keystart = [];
         for (var i = 0; i  < _keyname.length; i++) {
-            var y = start[group[i]] + 50 + cnt*80;
+            var y = start[group[i]] + 30 + cnt*70;
             keystart[i] = y;
             var rect = this.paper.rect(50, y, 480,50,10);
-            var t = this.paper.text(150, y + 20, _domainstack[i][1]);
-            var t = this.paper.text(250, y + 40, _keyname[i]);
+            var t = this.paper.text(280, y + 20, _domainstack[i][1]);
+            t.attr("font-size",12);
+            var t = this.paper.text(280, y + 40, _keyname[i]);
+            t.attr("font-size",12);
             if (i > 0 &&  group[i] == group[i-1]) {
                 cnt = 0;
             }
             else cnt++;
         }
-        
         for (var i = 0 ; i < _keyname.length -1 ; i++) {
-            var line_str = "M 100 " + (keystart[i] + 50)  +"L 100 "+ (keystart[i+1] -5 );
+            var line_str = "M 100 " + (keystart[i] + 50)  +"L 100 "+ (keystart[i+1]);
             var c = this.paper.path(line_str);
             c.attr("stroke-width",2);
             c.attr("arrow-end","classic-wide-long");
-//            var c = paper.image("Arrow.gif",100,keystart[i] + 50, 100, keystart[i+1] -
-//                                keystart[i] - 50 , 30);
         }
-//                paper.clear();
     }
     
     this.outputQueryChain = function(_list) {
@@ -87,7 +160,7 @@ var Chain = function (paper,_id1) {
             queryStack.push([domain_name,type]);
             packetStack.push(_list[i].name.to_uri());
         }
-        self.outputKeyChain(packetStack,queryStack);
+        self.outputQuerySeq(packetStack,queryStack);
     }
  
     
