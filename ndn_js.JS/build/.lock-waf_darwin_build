@@ -1,0 +1,8 @@
+argv = ['./waf', 'configure']
+environ = {'TERM_SESSION_ID': '05B8695A-9637-408C-90E3-9DEE290D2752', 'SSH_AUTH_SOCK': '/tmp/launch-Tf9pnh/Listeners', 'VERSIONER_PYTHON_PREFER_32_BIT': 'no', 'TERM_PROGRAM_VERSION': '309', 'SHELL': '/bin/bash', 'LOGNAME': 'xma', 'USER': 'xma', 'HOME': '/Users/xma', 'PATH': '/opt/local/bin:/opt/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin', 'TMPDIR': '/var/folders/hn/zgnb1mts0sz55tztpwgzg75r2qxync/T/', 'TERM_PROGRAM': 'Apple_Terminal', 'LANG': 'en_US.UTF-8', 'TERM': 'xterm-256color', 'Apple_PubSub_Socket_Render': '/tmp/launch-OzZOFx/Render', 'VERSIONER_PYTHON_VERSION': '2.7', 'SHLVL': '1', 'OLDPWD': '/Users/xma/Desktop/NDN.JS/lib', 'SECURITYSESSIONID': '186a4', '__CF_USER_TEXT_ENCODING': '0x57EFAAC:0:0', 'Apple_Ubiquity_Message': '/tmp/launch-MsXJPg/Apple_Ubiquity_Message', 'PWD': '/Users/xma/Desktop/NDN.JS', '_': './waf', 'COMMAND_MODE': 'unix2003'}
+files = ['/Users/xma/Desktop/NDN.JS/wscript']
+hash = -9176514687028031466
+options = {'files': '', 'yui': False, 'jobs': 8, 'verbose': 0, 'nocache': False, 'progress_bar': 0, 'distcheck_args': None, 'top': '', 'destdir': '', 'js': True, 'zones': '', 'prefix': '/usr/local/', 'ws': True, 'jsdir': None, 'download': False, 'force': False, 'keep': 0, 'out': '', 'targets': '', 'compiler': True}
+out_dir = '/Users/xma/Desktop/NDN.JS/build'
+run_dir = '/Users/xma/Desktop/NDN.JS'
+top_dir = '/Users/xma/Desktop/NDN.JS'
